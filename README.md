@@ -23,11 +23,19 @@ docker-compose up -d
 
 ###Test
 ```
-docker-compose ps
-
-         Name                        Command               State                    Ports                  
+        Name                        Command               State                    Ports                  
 -----------------------------------------------------------------------------------------------------------
+prometheus_grafana_1      /run.sh                          Up      0.0.0.0:3000->3000/tcp,:::3000->3000/tcp
 prometheus_prometheus_1   /bin/prometheus --web.enab ...   Up      0.0.0.0:9000->9090/tcp,:::9000->9090/tcp
-```
-Go to http://<ip-host>:9000/ UI prometheus
 
+```
+http://<ip-host>:9000/ UI prometheus
+http://<ip-host>:3000/ UI grafana (admin/admin)
+
+###Clear
+```
+docker-compose down --rmi all -v --remove-orphans
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+docker system prune -a
+```
