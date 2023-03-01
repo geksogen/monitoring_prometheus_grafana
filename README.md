@@ -17,12 +17,14 @@ curl localhost:8080/actuator/prometheus | grep jvm_memory_max
 
 ###Install and configure prometheus
 ```
-cd ../../prometheus/
+cd ../../prometheus_grafana/
 docker-compose up -d
 ```
 
 ###Test
 ```
+docker-compose ps
+
         Name                        Command               State                    Ports                  
 -----------------------------------------------------------------------------------------------------------
 prometheus_grafana_1      /run.sh                          Up      0.0.0.0:3000->3000/tcp,:::3000->3000/tcp
@@ -36,6 +38,5 @@ http://<ip-host>:3000/ UI grafana (admin/admin)
 ```
 docker-compose down --rmi all -v --remove-orphans
 docker stop $(docker ps -a -q)
-docker rm $(docker ps -a -q)
 docker system prune -a
 ```
