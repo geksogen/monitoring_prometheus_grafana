@@ -51,4 +51,10 @@ kubectl apply -f .
 docker-compose down --rmi all -v --remove-orphans
 docker stop $(docker ps -a -q)
 docker system prune -a
+###
+kubectl -n monitoring delete all -l app=hey
+kubectl -n monitoring delete deployment prometheus-deployment
+kubectl -n monitoring delete svc prometheus-service
+kubectl -n monitoring delete cm prometheus-config
 ```
+
