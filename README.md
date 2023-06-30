@@ -34,6 +34,18 @@ prometheus_prometheus_1   /bin/prometheus --web.enab ...   Up      0.0.0.0:9000-
 http://<ip-host>:9000/ UI prometheus
 http://<ip-host>:3000/ UI grafana (admin/admin)
 
+###k8s
+```
+kubectl create ns monitoring
+git clone https://github.com/geksogen/monitoring_prometheus_grafana.git
+cd k8s/app
+kubectl apply -f .
+# test cul to IP node:port
+cd ../prometheus/
+kubectl apply -f .
+```
+
+
 ###Clear
 ```
 docker-compose down --rmi all -v --remove-orphans
