@@ -40,11 +40,17 @@ kubectl create ns monitoring
 git clone https://github.com/geksogen/monitoring_prometheus_grafana.git
 cd k8s/app
 kubectl apply -f .
-# test cul to IP node:port
+```
+### Test
+```
+kubectl -n monitoring run -i -t nginx --rm=true --image=nginx -- bash
+curl hey-service.monitoring.svc:8000
+curl hey-service.monitoring.svc:8000/metrics
+```
+### Deploy Prometheus
 cd ../prometheus/
 kubectl apply -f .
 ```
-
 
 ###Clear
 ```
@@ -56,5 +62,6 @@ kubectl -n monitoring delete all -l app=hey
 kubectl -n monitoring delete deployment prometheus-deployment
 kubectl -n monitoring delete svc prometheus-service
 kubectl -n monitoring delete cm prometheus-config
+kubectl -n monitoring delete service hey-service
 ```
 
