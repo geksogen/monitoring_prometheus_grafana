@@ -50,8 +50,40 @@ curl hey-service.monitoring.svc:8000/metrics
 ### Deploy Prometheus
 cd ../prometheus/
 kubectl apply -f .
+
+### Use Operator Prometheus
+* Automated Monitoring Setup
+* Dynamic Service Discovery
+* High Availability Monitoring
+```bash
+# OLM (operator lifecycle manager)
+curl -sL https://github.com/operator-framework/operator-lifecycle-manager/releases/download/v0.28.0/install.sh | bash -s v0.28.0
+# Prometheus operator install
+kubectl apply -f https://operatorhub.io/install/prometheus.yaml
+# Prometheus install by operator
+kubectl apply -f - <<EOF
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: prometheus
+spec:
+  serviceAccountName: prometheus
+  serviceMonitorSelector:
+    matchLabels:
+      team: test
+  ruleSelector:
+    matchLabels:
+      team: test
+  resources:
+    requests:
+      memory: 400Mi
+EOF
+
+kubectl patch svc prometheus-operated -p '{"spec": {"type": "NodePort"}}'
+
 ```
 
+```
 ###Clear
 ```bash
 docker-compose down --rmi all -v --remove-orphans
