@@ -34,6 +34,14 @@ prometheus_prometheus_1   /bin/prometheus --web.enab ...   Up      0.0.0.0:9000-
 http://<ip-host>:9000/ UI prometheus
 http://<ip-host>:3000/ UI grafana (admin/admin)
 
+# logging stack Promtail, Loki
+```bash
+cd cd promtail_loki
+docker-compose up -d
+```
+Add datasource to Grafana
+http://<IP>:3100/
+
 ###k8s
 ```
 kubectl create ns monitoring
@@ -51,47 +59,13 @@ curl hey-service.monitoring.svc:8000/metrics
 cd ../prometheus/
 kubectl apply -f .
 
-### Use Operator Prometheus
-* Automated Monitoring Setup
-* Dynamic Service Discovery
-* High Availability Monitoring
-```bash
-# OLM (operator lifecycle manager)
-curl -sL https://github.com/operator-framework/operator-lifecycle-manager/releases/download/v0.28.0/install.sh | bash -s v0.28.0
-# Prometheus operator install
-kubectl apply -f https://operatorhub.io/install/prometheus.yaml
-# Prometheus install by operator
-kubectl apply -f - <<EOF
-apiVersion: monitoring.coreos.com/v1
-kind: Prometheus
-metadata:
-  name: prometheus
-spec:
-  serviceAccountName: prometheus
-  serviceMonitorSelector:
-    matchLabels:
-      team: test
-  ruleSelector:
-    matchLabels:
-      team: test
-  resources:
-    requests:
-      memory: 400Mi
-EOF
 
-kubectl patch svc prometheus-operated -p '{"spec": {"type": "NodePort"}}'
-
-```
-
-```
 ###Clear
 ```bash
 docker-compose down --rmi all -v --remove-orphans
 docker stop $(docker ps -a -q)
 docker system prune -a
-```
-###
-```bash
+
 kubectl -n monitoring delete all -l app=hey
 kubectl -n monitoring delete deployment prometheus-deployment
 kubectl -n monitoring delete svc prometheus-service

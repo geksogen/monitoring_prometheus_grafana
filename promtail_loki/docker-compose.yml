@@ -5,8 +5,8 @@ services:
     ports:
       - 3100:3100
     volumes:
-      - ./loki-config.yml:/etc/loki/loki-config.yaml
+      - ./loki/loki-config.yml:/etc/loki/loki-config.yaml
   promtail:
     image: grafana/promtail:latest
     volumes:
-      - ./promtail-config.yml:/etc/promtail/promtail-config.yaml
+      - ./promtail/promtail-config.yml:/etc/promtail/promtail-config.yaml
